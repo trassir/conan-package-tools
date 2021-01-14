@@ -35,6 +35,10 @@ class Uploader(object):
             self.printer.print_message("Uploading packages for '%s'" % str(reference))
             self.auth_manager.login(remote_name)
 
+            remotes = self.conan_api.remote_list()
+            for r in remotes:
+                self.printer.print_message("%s" % r.__str__())
+
             if client_version < Version("1.7.0"):
                 self.conan_api.upload(str(reference),
                                       package=package_id,
