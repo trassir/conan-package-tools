@@ -30,14 +30,16 @@ class Uploader(object):
             self.printer.print_message("Upload skipped, credentials for remote '%s' not available" % remote_name)
             return
 
+        self.printer.print_message("--- Dumping remotes ---")
+        remotes = self.conan_api.remote_list()
+        for r in remotes:
+            self.printer.print_message("%s" % r.__str__())
+        self.printer.print_message("--- Remotes dump ends here ---")
+ 
         if upload:
 
             self.printer.print_message("Uploading packages for '%s'" % str(reference))
             self.auth_manager.login(remote_name)
-
-            remotes = self.conan_api.remote_list()
-            for r in remotes:
-                self.printer.print_message("%s" % r.__str__())
 
             if client_version < Version("1.7.0"):
                 self.conan_api.upload(str(reference),
